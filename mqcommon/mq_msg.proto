@@ -1,0 +1,36 @@
+syntax = "proto3";
+package kjymq;
+
+//交换机类型
+enum ExchangeType{
+    UNKNOWTYPE = 0;//占位用,因为他要求必须第一个为0
+    DIRECT = 1;
+    FANOUT = 2;
+    TOPIC = 3;
+}
+
+//是否持久化存储 
+enum DeliveryMode {
+    UNKNOWMODE =  0;
+    UNDURABLE = 1;
+    DURABLE = 2;
+}
+
+//描述消息的基本属性
+message BasicProperties{
+    string id = 1;//消息的唯一标识符
+    DeliveryMode delivery_mode = 2;//消息的持久化模式
+    string routing_key = 3;//消息的路由键
+}
+
+message Message{
+    message Payload{
+        BasicProperties properties = 1;//消息的基本属性
+        string body = 2;//正文
+        string valid = 3;//表示消息的有效性或其他验证信息
+    };
+    Payload payload = 1;
+    uint32 offset = 2;//偏移量
+    uint32 length = 3;// payload 的长度
+
+}
